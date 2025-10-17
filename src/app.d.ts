@@ -8,6 +8,16 @@ declare global {
 		// interface PageState {}
 		// interface Platform {}
 	}
+
+	type Image = {
+		src: string;
+		alt: string;
+	};
+
+	type Message = {
+		id: string;
+		images: Image[];
+	};
 }
 
 export {};
