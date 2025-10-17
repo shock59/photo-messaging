@@ -11,9 +11,9 @@
 		{/each}
 	</div>
 
-	<form>
-		<input type="text" placeholder="Your guess" />
-		<input type="text" placeholder="Your name (optional)" />
+	<form method="POST" action="?/guess">
+		<input type="text" placeholder="Your guess" name="text" />
+		<input type="text" placeholder="Your name (optional)" name="author" />
 		<button>Guess</button>
 	</form>
 
