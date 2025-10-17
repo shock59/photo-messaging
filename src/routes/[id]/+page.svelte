@@ -57,36 +57,6 @@
 		border-radius: 8px;
 	}
 
-	form {
-		margin: 16px;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-	}
-
-	input,
-	button {
-		padding: 12px 22px;
-		border: none;
-		border-radius: 8px;
-		color: inherit;
-		font: inherit;
-		font-size: 22px;
-	}
-
-	input {
-		width: 520px;
-		margin-bottom: 16px;
-		outline: none;
-		background: #110f1b;
-	}
-
-	button {
-		width: fit-content;
-		background: #b5598f;
-		cursor: pointer;
-	}
-
 	.answer-text-introduction {
 		font-size: 28px;
 	}
@@ -104,7 +74,6 @@
 		padding: 12px 22px;
 		border-radius: 8px;
 		background: #110f1b;
-		font-size: 22px;
 	}
 
 	.guess-author {
