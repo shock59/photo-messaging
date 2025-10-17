@@ -1,4 +1,6 @@
 <script lang="ts">
+	import Info from 'phosphor-svelte/lib/Info';
+
 	let query: string = $state('');
 	let dialog: HTMLDialogElement;
 
@@ -37,7 +39,9 @@
 					<div class="image-container">
 						<img src={image.src} alt={image.alt} />
 						<div class="image-overlay">
-							<button type="button" onclick={() => showAttribution(image)}>Attribution</button>
+							<button type="button" onclick={() => showAttribution(image)}
+								><Info size={32} weight="duotone" /></button
+							>
 						</div>
 					</div>
 				{/each}
@@ -118,6 +122,14 @@
 
 	.image-container:hover .image-overlay {
 		opacity: 1;
+	}
+
+	.image-overlay button {
+		height: fit-content;
+		padding: 0;
+		margin: 8px;
+		display: flex;
+		background: none;
 	}
 
 	dialog {
