@@ -11,13 +11,16 @@
 		{/each}
 	</div>
 
-	<form method="POST" action="?/guess">
-		<input type="text" placeholder="Your guess" name="text" />
-		<input type="text" placeholder="Your name (optional)" name="author" />
-		<button>Guess</button>
-	</form>
+	{#if !data.guessed}
+		<form method="POST" action="?/guess">
+			<input type="text" placeholder="Your guess" name="text" />
+			<input type="text" placeholder="Your name (optional)" name="author" />
+			<button>Guess</button>
+		</form>
+	{:else}
+		<div class="answer-text-introduction">The message was:</div>
+		<div class="answer-text">“{data.message.text}”</div>
 
-	{#if data.guessed}
 		<h2>Others' guesses</h2>
 
 		{#each data.message.guesses as guess}
@@ -41,6 +44,7 @@
 	}
 
 	#images-container {
+		margin: 8px;
 		display: flex;
 		flex-direction: row;
 		flex-wrap: wrap;
@@ -81,6 +85,17 @@
 		width: fit-content;
 		background: #b5598f;
 		cursor: pointer;
+	}
+
+	.answer-text-introduction {
+		font-size: 28px;
+	}
+
+	.answer-text {
+		margin-bottom: 16px;
+		font-size: 48px;
+		font-weight: bold;
+		font-style: italic;
 	}
 
 	.guess {

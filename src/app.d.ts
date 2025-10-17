@@ -21,6 +21,7 @@ declare global {
 
 	type Message = {
 		id: string;
+		text: string;
 		images: Image[];
 		guesses: Guess[];
 	};
