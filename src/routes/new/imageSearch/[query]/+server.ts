@@ -30,7 +30,11 @@ export async function GET({ params }) {
 		.map((page) => {
 			return {
 				src: page.imageinfo[0].thumburl,
-				alt: page.entityterms?.label[0] ?? 'Image'
+				alt: page.entityterms?.label[0] ?? 'Image',
+				attribution: {
+					text: 'Wikimedia',
+					href: page.imageinfo[0].descriptionurl
+				}
 			};
 		});
 

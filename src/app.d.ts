@@ -12,6 +12,10 @@ declare global {
 	type Image = {
 		src: string;
 		alt: string;
+		attribution: {
+			text: string;
+			href: string;
+		};
 	};
 
 	type Guess = {
