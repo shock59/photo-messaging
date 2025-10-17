@@ -61,7 +61,8 @@
 <dialog bind:this={dialog}>
 	{#if dialogImage}
 		<div class="image-container"><img src={dialogImage.src} alt={dialogImage.alt} /></div>
-		<div>
+		<div>{dialogImage.alt}</div>
+		<div class="attribution">
 			Attribution: <a href={dialogImage.attribution.href}>{dialogImage.attribution.text}</a>
 		</div>
 	{/if}
@@ -148,5 +149,9 @@
 
 	dialog::backdrop {
 		background: #000000d0;
+	}
+
+	.attribution {
+		margin-top: 16px;
 	}
 </style>

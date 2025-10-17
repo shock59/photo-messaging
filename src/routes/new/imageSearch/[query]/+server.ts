@@ -40,7 +40,7 @@ export async function GET({ params }) {
 
 				return {
 					src: page.imageinfo[0].thumburl,
-					alt: page.entityterms?.label[0] ?? 'Image',
+					alt: stripHtml(page.entityterms?.label[0] ?? 'Image').result,
 					attribution: {
 						text: author,
 						href: page.imageinfo[0].descriptionurl
