@@ -62,7 +62,7 @@
 	{#if dialogImage}
 		<div class="image-container"><img src={dialogImage.src} alt={dialogImage.alt} /></div>
 		<div>
-			<a href={dialogImage.attribution.href}>{dialogImage.attribution.text}</a>
+			Attribution: <a href={dialogImage.attribution.href}>{dialogImage.attribution.text}</a>
 		</div>
 	{/if}
 
