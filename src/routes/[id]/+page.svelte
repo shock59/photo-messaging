@@ -62,7 +62,7 @@
 
 	input,
 	button {
-		padding: 16px;
+		padding: 12px 22px;
 		border: none;
 		border-radius: 8px;
 		color: inherit;
@@ -86,7 +86,7 @@
 	.guess {
 		width: 520px;
 		margin-bottom: 16px;
-		padding: 16px;
+		padding: 12px 22px;
 		border-radius: 8px;
 		background: #110f1b;
 		font-size: 22px;
