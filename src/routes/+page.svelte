@@ -23,17 +23,45 @@
 	];
 </script>
 
-<h1>What do you think the message is?</h1>
+<main>
+	<h1>What do you think the message is?</h1>
 
-<div id="images-container">
-	{#each images as image}
-		<img src={image.src} alt={image.alt} />
-	{/each}
-</div>
+	<div id="images-container">
+		{#each images as image}
+			<img src={image.src} alt={image.alt} />
+		{/each}
+	</div>
 
-<p>Answer: I love coding and trains</p>
+	<form>
+		<input type="text" placeholder="Your guess" />
+		<input type="text" placeholder="Your name (optional)" />
+		<button>Guess</button>
+	</form>
+
+	<h2>Others' guesses</h2>
+
+	<div class="guess">
+		<div>This is an example guess from someone else</div>
+		<div>Guess by Anonymous</div>
+	</div>
+
+	<div class="guess">
+		<div>This is another example guess from someone else</div>
+		<div>Guess by Anonymous</div>
+	</div>
+</main>
 
 <style>
+	main {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	h1 {
+		font-size: 48px;
+	}
+
 	#images-container {
 		display: flex;
 		flex-direction: row;
@@ -44,5 +72,35 @@
 		height: 240px;
 		margin: 8px;
 		border-radius: 8px;
+	}
+
+	form {
+		margin: 16px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	input,
+	button {
+		padding: 16px;
+		border-radius: 8px;
+		font: inherit;
+		font-size: 22px;
+	}
+
+	input {
+		width: 520px;
+		margin-bottom: 16px;
+	}
+
+	button {
+		width: fit-content;
+	}
+
+	.guess {
+		width: 520px;
+		padding: 16px;
+		font-size: 22px;
 	}
 </style>
