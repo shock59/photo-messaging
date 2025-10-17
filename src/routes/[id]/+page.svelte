@@ -19,15 +19,12 @@
 
 	<h2>Others' guesses</h2>
 
-	<div class="guess">
-		<div>This is an example guess from someone else</div>
-		<div class="guess-author">Guess by Anonymous</div>
-	</div>
-
-	<div class="guess">
-		<div>This is another example guess from someone else</div>
-		<div class="guess-author">Guess by Anonymous</div>
-	</div>
+	{#each data.message.guesses as guess}
+		<div class="guess">
+			<div>{guess.text}</div>
+			<div class="guess-author">{guess.author}</div>
+		</div>
+	{/each}
 </main>
 
 <style>

@@ -14,9 +14,15 @@ declare global {
 		alt: string;
 	};
 
+	type Guess = {
+		text: string;
+		author: string;
+	};
+
 	type Message = {
 		id: string;
 		images: Image[];
+		guesses: Guess[];
 	};
 }
 
