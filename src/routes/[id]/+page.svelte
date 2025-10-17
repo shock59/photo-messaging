@@ -17,14 +17,16 @@
 		<button>Guess</button>
 	</form>
 
-	<h2>Others' guesses</h2>
+	{#if data.guessed}
+		<h2>Others' guesses</h2>
 
-	{#each data.message.guesses as guess}
-		<div class="guess">
-			<div>{guess.text}</div>
-			<div class="guess-author">{guess.author}</div>
-		</div>
-	{/each}
+		{#each data.message.guesses as guess}
+			<div class="guess">
+				<div>{guess.text}</div>
+				<div class="guess-author">{guess.author}</div>
+			</div>
+		{/each}
+	{/if}
 </main>
 
 <style>
