@@ -1,4 +1,9 @@
 body {
+	width: 100%;
+	min-height: 100vh;
+	margin: 0;
+	background: #090811;
+	color: #e8e6f4;
 	font-family: 'Andika', sans-serif;
 	font-weight: 400;
 	font-style: normal;

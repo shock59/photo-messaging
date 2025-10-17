@@ -42,12 +42,12 @@
 
 	<div class="guess">
 		<div>This is an example guess from someone else</div>
-		<div>Guess by Anonymous</div>
+		<div class="guess-author">Guess by Anonymous</div>
 	</div>
 
 	<div class="guess">
 		<div>This is another example guess from someone else</div>
-		<div>Guess by Anonymous</div>
+		<div class="guess-author">Guess by Anonymous</div>
 	</div>
 </main>
 
@@ -71,6 +71,7 @@
 	img {
 		height: 240px;
 		margin: 8px;
+		border: 2px #000000 solid;
 		border-radius: 8px;
 	}
 
@@ -84,7 +85,9 @@
 	input,
 	button {
 		padding: 16px;
+		border: none;
 		border-radius: 8px;
+		color: inherit;
 		font: inherit;
 		font-size: 22px;
 	}
@@ -92,15 +95,27 @@
 	input {
 		width: 520px;
 		margin-bottom: 16px;
+		outline: none;
+		background: #110f1b;
 	}
 
 	button {
 		width: fit-content;
+		background: #b5598f;
+		cursor: pointer;
 	}
 
 	.guess {
 		width: 520px;
+		margin-bottom: 16px;
 		padding: 16px;
+		border-radius: 8px;
+		background: #110f1b;
 		font-size: 22px;
+	}
+
+	.guess-author {
+		font-size: 16px;
+		opacity: 0.5;
 	}
 </style>
