@@ -1,18 +1,22 @@
 <script lang="ts">
 	import Info from 'phosphor-svelte/lib/Info';
+	import Plus from 'phosphor-svelte/lib/Plus';
+	import Trash from 'phosphor-svelte/lib/Trash';
 
-	let query: string = $state('');
-	let dialog: HTMLDialogElement;
+	let selectedImages: Image[] = $state([]);
 
+	let SearchQuery: string = $state('');
 	let searching: boolean = $state(false);
-	let images: Image[] = $state([]);
+	let searchResults: Image[] = $state([]);
+
+	let dialog: HTMLDialogElement;
 	let dialogImage: Image | undefined = $state();
 
 	async function search() {
-		if (!query.trim()) return;
+		if (!SearchQuery.trim()) return;
 		searching = true;
-		const res = await fetch(`./new/imageSearch/${encodeURIComponent(query)}`);
-		images = await res.json();
+		const res = await fetch(`./new/imageSearch/${encodeURIComponent(SearchQuery)}`);
+		searchResults = await res.json();
 		searching = false;
 	}
 
@@ -25,22 +29,46 @@
 <form method="POST" action="?/guess">
 	<input type="text" placeholder="Your message" name="text" />
 
-	<div id="search-container">
+	<div class="container">
+		<div><b>Selected images</b></div>
+		<div class="images-container">
+			{#each selectedImages as image, index}
+				<div class="image-container">
+					<img src={image.src} alt={image.alt} />
+					<div class="image-overlay">
+						<button type="button" onclick={() => showAttribution(image)}
+							><Info size={32} weight="duotone" /></button
+						>
+
+						<button type="button" onclick={() => selectedImages.splice(index, 1)}
+							><Trash size={32} weight="duotone" /></button
+						>
+					</div>
+				</div>
+			{/each}
+		</div>
+	</div>
+
+	<div class="container">
 		<div class="row">
-			<input type="text" placeholder="Search images" bind:value={query} />
+			<input type="text" placeholder="Search images" bind:value={SearchQuery} />
 			<button type="button" onclick={search}>Search</button>
 		</div>
 
-		<div id="images-container">
+		<div class="images-container">
 			{#if searching}
 				Loading search results
-			{:else if images.length}
-				{#each images as image}
+			{:else if searchResults.length}
+				{#each searchResults as image}
 					<div class="image-container">
 						<img src={image.src} alt={image.alt} />
 						<div class="image-overlay">
 							<button type="button" onclick={() => showAttribution(image)}
 								><Info size={32} weight="duotone" /></button
+							>
+
+							<button type="button" onclick={() => selectedImages.push(image)}
+								><Plus size={32} /></button
 							>
 						</div>
 					</div>
@@ -73,7 +101,9 @@
 </dialog>
 
 <style>
-	#search-container {
+	.container {
+		width: calc(100% - 44px);
+		max-width: 1260px;
 		margin-bottom: 16px;
 		padding: 12px 22px;
 		border-radius: 8px;
@@ -83,11 +113,11 @@
 		background: #110f1b;
 	}
 
-	#search-container input {
+	.container input {
 		background: #090811;
 	}
 
-	#images-container {
+	.images-container {
 		margin: 8px;
 		display: flex;
 		flex-direction: row;
@@ -149,6 +179,10 @@
 
 	dialog::backdrop {
 		background: #000000d0;
+	}
+
+	dialog .image-container {
+		height: 480px;
 	}
 
 	.attribution {
