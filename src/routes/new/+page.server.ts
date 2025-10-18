@@ -1,6 +1,7 @@
 import db from "$lib/db.js";
 import isPexelsError from "$lib/isPexelsError";
 import pexelsClient from "$lib/pexelsClient.js";
+import unsafeImage from "$lib/unsafeImage.js";
 import { wikimediaPageToImage } from "$lib/wikimediaPageToImage";
 import { error, redirect } from "@sveltejs/kit";
 
@@ -41,6 +42,11 @@ export const actions = {
 					return error(400, `Invalid image: ${selectedImage}`);
 				}
 				const page = pages[0];
+
+				if (await unsafeImage(page.imageinfo[0].url)) {
+					return error(400, `Image was flagged by moderation: ${selectedImage}`);
+				}
+
 				images.push(wikimediaPageToImage(page));
 			} else {
 				const photo = await pexelsClient.photos.show({ id: selectedImage[1] });
