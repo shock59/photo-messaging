@@ -3,7 +3,7 @@ import { wikimediaPageToImage } from "$lib/wikimediaPageToImage";
 import { error, redirect } from "@sveltejs/kit";
 
 export const actions = {
-	default: async ({ request }) => {
+	default: async ({ request, cookies }) => {
 		const data = await request.formData();
 
 		const text = data.get("text");
@@ -51,6 +51,7 @@ export const actions = {
 		db.data.messages.push(message);
 		db.write();
 
+		cookies.set("guessed", "true", { path: `/${message.id}` });
 		return redirect(302, `/${message.id}`);
 	},
 };
