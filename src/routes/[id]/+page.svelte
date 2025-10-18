@@ -21,8 +21,9 @@
 	});
 </script>
 
-<h1>What do you think the message is?</h1>
-<div class="author">Message created by {data.message.author}</div>
+<h1>Guess the message</h1>
+<div>Message created by {data.message.author}</div>
+<div class="bottom-title-text">What do you think they were trying to signal?</div>
 
 <div id="images-container">
 	{#each data.message.images as image}
@@ -68,7 +69,7 @@
 		margin-bottom: 0;
 	}
 
-	.author {
+	.bottom-title-text {
 		margin-bottom: 16px;
 		font-style: italic;
 	}
