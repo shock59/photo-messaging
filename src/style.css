@@ -57,3 +57,41 @@ a {
 .hidden {
 	display: none;
 }
+
+.image-container {
+	height: 240px;
+	margin: 8px;
+	position: relative;
+	border: 2px #000000 solid;
+	border-radius: 8px;
+}
+
+img {
+	height: 100%;
+}
+
+.image-overlay {
+	height: 100%;
+	width: 100%;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	display: flex;
+	justify-content: right;
+	opacity: 0;
+	transition: 0.5s ease;
+}
+
+.image-container:hover .image-overlay {
+	opacity: 1;
+}
+
+.image-overlay button {
+	height: fit-content;
+	padding: 0;
+	margin: 8px;
+	display: flex;
+	background: none;
+}

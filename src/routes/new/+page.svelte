@@ -3,6 +3,7 @@
 	import Plus from "phosphor-svelte/lib/Plus";
 	import Trash from "phosphor-svelte/lib/Trash";
 	import MagnifyingGlass from "phosphor-svelte/lib/MagnifyingGlass";
+	import AttributionDialog from "$lib/components/AttributionDialog.svelte";
 
 	let selectedImages: ServiceImage[] = $state([]);
 
@@ -11,7 +12,7 @@
 	let searching: boolean = $state(false);
 	let searchResults: ServiceImage[] = $state([]);
 
-	let dialog: HTMLDialogElement;
+	let dialog: AttributionDialog;
 	let dialogImage: ServiceImage | undefined = $state();
 
 	async function search() {
@@ -24,7 +25,7 @@
 
 	function showAttribution(image: ServiceImage) {
 		dialogImage = image;
-		dialog.showModal();
+		dialog.show();
 	}
 </script>
 
@@ -104,23 +105,7 @@
 	<button>Submit</button>
 </form>
 
-<dialog bind:this={dialog}>
-	{#if dialogImage}
-		<div class="image-container">
-			{#key dialogImage}<img src={dialogImage.srcs.large} alt={dialogImage.alt} />{/key}
-		</div>
-		<div>{dialogImage.alt}</div>
-		<div class="attribution">
-			Attribution: <a href={dialogImage.attribution.href} target="_blank"
-				>{dialogImage.attribution.text}</a
-			>
-		</div>
-	{/if}
-
-	<form method="dialog">
-		<button>Close</button>
-	</form>
-</dialog>
+<AttributionDialog image={dialogImage} bind:this={dialog} />
 
 <style>
 	.container {
@@ -146,69 +131,5 @@
 		flex-direction: row;
 		flex-wrap: wrap;
 		justify-content: center;
-	}
-
-	.image-container {
-		height: 240px;
-		margin: 8px;
-		position: relative;
-		border: 2px #000000 solid;
-		border-radius: 8px;
-	}
-
-	img {
-		height: 100%;
-	}
-
-	.image-overlay {
-		height: 100%;
-		width: 100%;
-		position: absolute;
-		top: 0;
-		bottom: 0;
-		left: 0;
-		right: 0;
-		display: flex;
-		justify-content: right;
-		opacity: 0;
-		transition: 0.5s ease;
-	}
-
-	.image-container:hover .image-overlay {
-		opacity: 1;
-	}
-
-	.image-overlay button {
-		height: fit-content;
-		padding: 0;
-		margin: 8px;
-		display: flex;
-		background: none;
-	}
-
-	dialog {
-		padding: 12px 22px;
-		flex-direction: column;
-		align-items: center;
-		border: none;
-		border-radius: 8px;
-		background: #110f1b;
-		color: inherit;
-	}
-
-	dialog[open] {
-		display: flex;
-	}
-
-	dialog::backdrop {
-		background: #000000d0;
-	}
-
-	dialog .image-container {
-		height: 480px;
-	}
-
-	.attribution {
-		margin-top: 16px;
 	}
 </style>

@@ -1,5 +1,16 @@
 <script lang="ts">
+	import AttributionDialog from "$lib/components/AttributionDialog.svelte";
+	import Info from "phosphor-svelte/lib/Info";
+
 	const { data } = $props();
+
+	let dialog: AttributionDialog;
+	let dialogImage: ServiceImage | undefined = $state();
+
+	function showAttribution(image: ServiceImage) {
+		dialogImage = image;
+		dialog.show();
+	}
 </script>
 
 <main>
@@ -8,7 +19,15 @@
 
 	<div id="images-container">
 		{#each data.message.images as image}
-			<img src={image.srcs.small} alt={image.alt} />
+			<div class="image-container">
+				<img src={image.srcs.small} alt={image.alt} />
+
+				<div class="image-overlay">
+					<button type="button" onclick={() => showAttribution(image)}
+						><Info size={32} weight="duotone" /></button
+					>
+				</div>
+			</div>
 		{/each}
 	</div>
 
@@ -31,6 +50,8 @@
 			</div>
 		{/each}
 	{/if}
+
+	<AttributionDialog image={dialogImage} bind:this={dialog} />
 </main>
 
 <style>
@@ -56,12 +77,6 @@
 		flex-direction: row;
 		flex-wrap: wrap;
 		justify-content: center;
-	}
-	img {
-		height: 240px;
-		margin: 8px;
-		border: 2px #000000 solid;
-		border-radius: 8px;
 	}
 
 	.answer-text-introduction {
