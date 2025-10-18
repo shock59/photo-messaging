@@ -1,11 +1,11 @@
 <script lang="ts">
-	import Info from 'phosphor-svelte/lib/Info';
-	import Plus from 'phosphor-svelte/lib/Plus';
-	import Trash from 'phosphor-svelte/lib/Trash';
+	import Info from "phosphor-svelte/lib/Info";
+	import Plus from "phosphor-svelte/lib/Plus";
+	import Trash from "phosphor-svelte/lib/Trash";
 
 	let selectedImages: Image[] = $state([]);
 
-	let SearchQuery: string = $state('');
+	let SearchQuery: string = $state("");
 	let searching: boolean = $state(false);
 	let searchResults: Image[] = $state([]);
 
