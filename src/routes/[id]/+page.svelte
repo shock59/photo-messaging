@@ -43,6 +43,9 @@
 
 		<h2>Others' guesses</h2>
 
+		{#if !data.message.guesses.length}
+			<p>Nobody has guessed yet.</p>
+		{/if}
 		{#each data.message.guesses as guess}
 			<div class="guess">
 				<div>{guess.text}</div>
