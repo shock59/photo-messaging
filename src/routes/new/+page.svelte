@@ -2,6 +2,7 @@
 	import Info from "phosphor-svelte/lib/Info";
 	import Plus from "phosphor-svelte/lib/Plus";
 	import Trash from "phosphor-svelte/lib/Trash";
+	import MagnifyingGlass from "phosphor-svelte/lib/MagnifyingGlass";
 
 	let selectedImages: Image[] = $state([]);
 
@@ -52,7 +53,7 @@
 	<div class="container">
 		<div class="row">
 			<input type="text" placeholder="Search images" bind:value={SearchQuery} />
-			<button type="button" onclick={search}>Search</button>
+			<button type="button" onclick={search}><MagnifyingGlass weight="bold" /></button>
 		</div>
 
 		<div class="images-container">
