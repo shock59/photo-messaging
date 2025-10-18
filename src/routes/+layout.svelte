@@ -17,17 +17,37 @@
 </svelte:head>
 
 <header>
-	<a href="/">Explore messages</a> •
+	<a href="/">Explore messages</a> <span class="bullet">•</span>
 	<a href="/new">Create a new message</a>
 </header>
+
 {@render children?.()}
 
+<footer>
+	Free images from <a href="https://commons.wikimedia.org/wiki/Main_Page" target="_blank"
+		>Wikimedia Commons</a
+	>
+	and
+	<a href="https://www.pexels.com/" target="_blank">Pexels</a>
+	<span class="bullet">•</span>
+	View the source code on my
+	<a href="https://github.com/shock59/photo-messaging" target="_blank">GitHub</a>
+</footer>
+
 <style>
-	header {
+	header,
+	footer {
 		width: calc(100% - 32px);
 		padding: 16px;
 		background: #110f1b;
-		color: #ffffff35;
 		text-align: center;
+	}
+
+	footer {
+		margin-top: auto;
+	}
+
+	.bullet {
+		color: #ffffff35;
 	}
 </style>
