@@ -1,3 +1,4 @@
+import { addGuessedCookie } from "$lib/cookies.js";
 import db from "$lib/db.js";
 import isPexelsError from "$lib/isPexelsError";
 import pexelsClient from "$lib/pexelsClient.js";
@@ -80,7 +81,7 @@ export const actions = {
 		db.data.messages.push(message);
 		db.write();
 
-		cookies.set("guessed", "true", { path: `/${message.id}` });
+		addGuessedCookie(cookies, message.id);
 		return redirect(302, `/${message.id}`);
 	},
 };

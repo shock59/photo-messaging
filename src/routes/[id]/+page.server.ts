@@ -1,3 +1,4 @@
+import { addGuessedCookie, guessed } from "$lib/cookies.js";
 import db from "$lib/db";
 import { error, redirect } from "@sveltejs/kit";
 
@@ -11,9 +12,7 @@ export function load({ params, cookies }) {
 		return error(404);
 	}
 
-	const guessed = cookies.get("guessed") == "true";
-
-	return { message, guessed };
+	return { message, guessed: guessed(cookies, params.id) };
 }
 
 export const actions = {
@@ -39,7 +38,7 @@ export const actions = {
 		const guess: Guess = { text, author };
 		message.guesses.unshift(guess);
 		db.write();
-		cookies.set("guessed", "true", { path: url.pathname });
+		addGuessedCookie(cookies, params.id);
 		return redirect(302, "../");
 	},
 };
