@@ -101,7 +101,9 @@
 		</div>
 		<div>{dialogImage.alt}</div>
 		<div class="attribution">
-			Attribution: <a href={dialogImage.attribution.href}>{dialogImage.attribution.text}</a>
+			Attribution: <a href={dialogImage.attribution.href} target="_blank"
+				>{dialogImage.attribution.text}</a
+			>
 		</div>
 	{/if}
 
