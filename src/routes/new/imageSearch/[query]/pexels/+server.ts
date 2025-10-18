@@ -1,5 +1,6 @@
 import isPexelsError from "$lib/isPexelsError";
 import pexelsClient from "$lib/pexelsClient.js";
+import pexelsPhotoToImage from "$lib/pexelsPhotoToImage";
 import { error, json } from "@sveltejs/kit";
 
 export async function GET({ params }) {
@@ -8,19 +9,5 @@ export async function GET({ params }) {
 		return error(500, "Pexels error");
 	}
 
-	return json(
-		results.photos.map((photo) => ({
-			type: "pexels",
-			id: photo.id,
-			srcs: {
-				small: photo.src.medium,
-				large: photo.src.original,
-			},
-			alt: photo.alt ?? "Image",
-			attribution: {
-				text: `${photo.photographer} on Pexels`,
-				href: photo.url,
-			},
-		})),
-	);
+	return json(results.photos.map(pexelsPhotoToImage));
 }

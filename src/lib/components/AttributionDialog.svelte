@@ -10,7 +10,11 @@
 <dialog bind:this={dialog}>
 	{#if image}
 		<div class="image-container">
-			{#key image}<img src={image.srcs.large} alt={image.alt} />{/key}
+			{#key image}<img
+					src={image.srcs.large}
+					alt={image.alt}
+					width={480 * image.widthHeightRatio}
+				/>{/key}
 		</div>
 		<div>{image.alt}</div>
 		<div class="attribution">

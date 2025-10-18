@@ -57,7 +57,7 @@
 			{/if}
 			{#each selectedImages as image, index}
 				<div class="image-container">
-					<img src={image.srcs.small} alt={image.alt} />
+					<img src={image.srcs.small} alt={image.alt} width={240 * image.widthHeightRatio} />
 					<div class="image-overlay">
 						<button type="button" onclick={() => showAttribution(image)}
 							><Info size={32} weight="duotone" /></button
@@ -95,7 +95,7 @@
 			{:else if searchResults.length}
 				{#each searchResults as image}
 					<div class="image-container">
-						<img src={image.srcs.small} alt={image.alt} />
+						<img src={image.srcs.small} alt={image.alt} width={240 * image.widthHeightRatio} />
 						<div class="image-overlay">
 							<button type="button" onclick={() => showAttribution(image)}
 								><Info size={32} weight="duotone" /></button

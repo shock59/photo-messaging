@@ -8,6 +8,7 @@ export function wikimediaPageToImage(page: WikimediaPage): CommonsImage {
 		type: "commons",
 		filename: page.title,
 		srcs: { small: imageInfo.thumburl, large: imageInfo.url },
+		widthHeightRatio: imageInfo.width / imageInfo.height,
 		alt: stripHtml(page.entityterms?.label[0] ?? "Image").result,
 		attribution: {
 			text: author,

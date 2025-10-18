@@ -14,6 +14,7 @@ declare global {
 			small: string;
 			large: string;
 		};
+		widthHeightRatio: number;
 		alt: string;
 		attribution: {
 			text: string;
@@ -50,6 +51,8 @@ declare global {
 		title: string;
 		index: number;
 		imageinfo: {
+			width: number;
+			height: number;
 			thumburl: string;
 			url: string;
 			descriptionurl: string;

@@ -2,6 +2,7 @@ import { addGuessedCookie } from "$lib/cookies.js";
 import db from "$lib/db.js";
 import isPexelsError from "$lib/isPexelsError";
 import pexelsClient from "$lib/pexelsClient.js";
+import pexelsPhotoToImage from "$lib/pexelsPhotoToImage.js";
 import unsafeImage from "$lib/unsafeImage.js";
 import { wikimediaPageToImage } from "$lib/wikimediaPageToImage";
 import { error, redirect } from "@sveltejs/kit";
@@ -55,19 +56,7 @@ export const actions = {
 					return error(400, `Invalid image: ${selectedImage}`);
 				}
 
-				images.push({
-					type: "pexels",
-					id: photo.id,
-					srcs: {
-						small: photo.src.medium,
-						large: photo.src.original,
-					},
-					alt: photo.alt ?? "Image",
-					attribution: {
-						text: `${photo.photographer} on Pexels`,
-						href: photo.url,
-					},
-				});
+				images.push(pexelsPhotoToImage(photo));
 			}
 		}
 
