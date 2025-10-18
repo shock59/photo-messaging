@@ -44,3 +44,7 @@ button {
 a {
 	color: #b5598f;
 }
+
+.hidden {
+	display: none;
+}

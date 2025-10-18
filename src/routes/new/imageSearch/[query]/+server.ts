@@ -1,30 +1,5 @@
+import { wikimediaPageToImage } from "$lib/wikimediaPageToImage.js";
 import { json } from "@sveltejs/kit";
-import { stripHtml } from "string-strip-html";
-
-type WikimediaResponse = {
-	query: {
-		pages: Record<
-			string,
-			{
-				title: string;
-				index: number;
-				imageinfo: {
-					thumburl: string;
-					url: string;
-					descriptionurl: string;
-					extmetadata: {
-						Artist?: {
-							value: string;
-						};
-					};
-				}[];
-				entityterms?: {
-					label: string[];
-				};
-			}
-		>;
-	};
-};
 
 export async function GET({ params }) {
 	const res = await fetch(
@@ -32,23 +7,9 @@ export async function GET({ params }) {
 	);
 	const wikimediaJson = (await res.json()) as WikimediaResponse;
 
-	const images: Image[] = await Promise.all(
-		Object.values(wikimediaJson.query.pages)
-			.toSorted((a, b) => a.index - b.index)
-			.map(async (page) => {
-				const imageInfo = page.imageinfo[0];
-				const author = stripHtml(imageInfo.extmetadata.Artist?.value ?? "Wikimedia").result;
-
-				return {
-					srcs: { small: imageInfo.thumburl, large: imageInfo.url },
-					alt: stripHtml(page.entityterms?.label[0] ?? "Image").result,
-					attribution: {
-						text: author,
-						href: imageInfo.descriptionurl,
-					},
-				};
-			}),
-	);
+	const images: Image[] = Object.values(wikimediaJson.query.pages)
+		.toSorted((a, b) => a.index - b.index)
+		.map(wikimediaPageToImage);
 
 	return json(images);
 }

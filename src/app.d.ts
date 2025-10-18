@@ -10,6 +10,7 @@ declare global {
 	}
 
 	type Image = {
+		filename: string;
 		srcs: {
 			small: string;
 			large: string;
@@ -28,9 +29,34 @@ declare global {
 
 	type Message = {
 		id: string;
+		author: string;
 		text: string;
 		images: Image[];
 		guesses: Guess[];
+	};
+
+	type WikimediaPage = {
+		title: string;
+		index: number;
+		imageinfo: {
+			thumburl: string;
+			url: string;
+			descriptionurl: string;
+			extmetadata: {
+				Artist?: {
+					value: string;
+				};
+			};
+		}[];
+		entityterms?: {
+			label: string[];
+		};
+	};
+
+	type WikimediaResponse = {
+		query: {
+			pages: Record<string, WikimediaPage>;
+		};
 	};
 }
 

@@ -27,7 +27,7 @@
 	}
 </script>
 
-<form method="POST" action="?/guess">
+<form method="POST">
 	<input type="text" placeholder="Your message" name="text" />
 
 	<div class="container">
@@ -84,6 +84,13 @@
 	</div>
 
 	<input type="text" placeholder="Your name (optional)" name="author" />
+
+	<input
+		type="text"
+		name="imageTitles"
+		class="hidden"
+		value={JSON.stringify(selectedImages.map((image) => image.filename))}
+	/>
 	<button>Submit</button>
 </form>
 

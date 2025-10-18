@@ -4,6 +4,7 @@
 
 <main>
 	<h1>What do you think the message is?</h1>
+	<div class="author">Message created by {data.message.author}</div>
 
 	<div id="images-container">
 		{#each data.message.images as image}
@@ -40,7 +41,13 @@
 	}
 
 	h1 {
+		margin-bottom: 0;
 		font-size: 48px;
+	}
+
+	.author {
+		margin-bottom: 16px;
+		font-style: italic;
 	}
 
 	#images-container {
