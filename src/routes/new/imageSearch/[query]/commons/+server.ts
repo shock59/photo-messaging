@@ -1,3 +1,5 @@
+import asyncFilter from "$lib/asyncFilter";
+import unsafeImage from "$lib/unsafeImage.js";
 import { wikimediaPageToImage } from "$lib/wikimediaPageToImage.js";
 import { json } from "@sveltejs/kit";
 
@@ -7,9 +9,16 @@ export async function GET({ params }) {
 	);
 	const wikimediaJson = (await res.json()) as WikimediaResponse;
 
-	const images: CommonsImage[] = Object.values(wikimediaJson.query.pages)
-		.toSorted((a, b) => a.index - b.index)
-		.map(wikimediaPageToImage);
+	const images: CommonsImage[] = (
+		await asyncFilter(
+			Object.values(wikimediaJson.query.pages)
+				.toSorted((a, b) => a.index - b.index)
+				.filter((page) => !page.imageinfo[0].descriptionurl.endsWith(".gif")),
+			async (page) => {
+				return !(await unsafeImage(page.imageinfo[0].url));
+			},
+		)
+	).map(wikimediaPageToImage);
 
 	return json(images);
 }
