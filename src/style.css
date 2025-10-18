@@ -89,6 +89,7 @@ img {
 	justify-content: right;
 	opacity: 0;
 	transition: 0.5s ease;
+	mix-blend-mode: difference;
 }
 
 .image-container:hover .image-overlay {
