@@ -45,6 +45,16 @@
 	<div class="container">
 		<div><b>Selected images</b></div>
 		<div class="images-container">
+			{#if !selectedImages.length}
+				<div class="no-images">
+					There are no images currently selected - add one by searching for images below, hovering
+					over one and clicking the <Plus
+						size={22}
+						style="vertical-align: sub;"
+						class="aligned-image"
+					/>
+				</div>
+			{/if}
 			{#each selectedImages as image, index}
 				<div class="image-container">
 					<img src={image.srcs.small} alt={image.alt} />
@@ -98,6 +108,7 @@
 					</div>
 				{/each}
 			{:else}
+				<span>No search results.</span>
 				<span
 					>Tip: If you have a specific image on Wikimedia Commons you want to use, use the url for
 					its page as your search.</span
@@ -152,5 +163,9 @@
 		flex-direction: row;
 		flex-wrap: wrap;
 		justify-content: center;
+	}
+
+	.no-images {
+		text-align: center;
 	}
 </style>
