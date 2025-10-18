@@ -16,4 +16,18 @@
 	/>
 </svelte:head>
 
+<header>
+	<a href="/">Explore messages</a> •
+	<a href="/new">Create a new message</a>
+</header>
 {@render children?.()}
+
+<style>
+	header {
+		width: calc(100% - 32px);
+		padding: 16px;
+		background: #110f1b;
+		color: #ffffff35;
+		text-align: center;
+	}
+</style>
