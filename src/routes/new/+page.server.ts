@@ -1,5 +1,6 @@
 import { addGuessedCookie } from "$lib/cookies.js";
 import db from "$lib/db.js";
+import discordLog from "$lib/discordLog";
 import isPexelsError from "$lib/isPexelsError";
 import pexelsClient from "$lib/pexelsClient.js";
 import pexelsPhotoToImage from "$lib/pexelsPhotoToImage.js";
@@ -69,6 +70,8 @@ export const actions = {
 		};
 		db.data.messages.push(message);
 		db.write();
+
+		discordLog("Message submitted");
 
 		addGuessedCookie(cookies, message.id);
 		return redirect(302, `/${message.id}`);

@@ -1,5 +1,6 @@
 import { addGuessedCookie, guessed } from "$lib/cookies.js";
 import db from "$lib/db";
+import discordLog from "$lib/discordLog";
 import { error, redirect } from "@sveltejs/kit";
 
 function getMessage(id: string) {
@@ -38,6 +39,7 @@ export const actions = {
 		const guess: Guess = { text, author };
 		message.guesses.unshift(guess);
 		db.write();
+		discordLog("Guess submitted");
 		addGuessedCookie(cookies, params.id);
 		return redirect(302, "../");
 	},
