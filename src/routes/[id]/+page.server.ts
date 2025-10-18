@@ -41,6 +41,6 @@ export const actions = {
 		db.write();
 		discordLog("Guess submitted");
 		addGuessedCookie(cookies, params.id);
-		return redirect(302, "../");
+		return redirect(302, `/${params.id}`);
 	},
 };
