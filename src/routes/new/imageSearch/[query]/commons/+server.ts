@@ -7,7 +7,7 @@ export async function GET({ params }) {
 	);
 	const wikimediaJson = (await res.json()) as WikimediaResponse;
 
-	const images: Image[] = Object.values(wikimediaJson.query.pages)
+	const images: CommonsImage[] = Object.values(wikimediaJson.query.pages)
 		.toSorted((a, b) => a.index - b.index)
 		.map(wikimediaPageToImage);
 

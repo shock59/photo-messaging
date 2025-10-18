@@ -26,6 +26,7 @@
 	},
 	"dependencies": {
 		"lowdb": "^7.0.1",
+		"pexels": "^1.4.0",
 		"phosphor-svelte": "^3.0.1",
 		"string-strip-html": "^13.5.0"
 	}

@@ -1,4 +1,6 @@
 import db from "$lib/db.js";
+import isPexelsError from "$lib/isPexelsError";
+import pexelsClient from "$lib/pexelsClient.js";
 import { wikimediaPageToImage } from "$lib/wikimediaPageToImage";
 import { error, redirect } from "@sveltejs/kit";
 
@@ -11,11 +13,11 @@ export const actions = {
 			return error(400, "Bad text");
 		}
 
-		const imageTitlesString = data.get("imageTitles");
-		if (!isStringifiedStringArray(imageTitlesString)) {
+		const imagesString = data.get("images");
+		if (!isStringifiedStringArray(imagesString)) {
 			return error(400, "Bad images");
 		}
-		const imageTitles = JSON.parse(imageTitlesString) as string[];
+		const selectedImages = JSON.parse(imagesString) as (["commons", string] | ["pexels", number])[];
 
 		let author = data.get("author") ?? "Anonymous";
 		if (typeof author !== "string") {
@@ -25,20 +27,41 @@ export const actions = {
 			author = "Anonymous";
 		}
 
-		let images: Image[] = [];
+		let images: ServiceImage[] = [];
 
-		for (const title of imageTitles) {
-			const res = await fetch(
-				`https://commons.wikimedia.org/w/api.php?action=query&format=json&uselang=en&titles=${encodeURIComponent(title)}&prop=info%7Cimageinfo%7Centityterms&inprop=url&iiprop=url%7Csize%7Cmime%7Cextmetadata&iiurlheight=220&wbetterms=label`,
-			);
-			const wikimediaJson = (await res.json()) as WikimediaResponse;
+		for (const selectedImage of selectedImages) {
+			if (selectedImage[0] == "commons") {
+				const res = await fetch(
+					`https://commons.wikimedia.org/w/api.php?action=query&format=json&uselang=en&titles=${encodeURIComponent(selectedImage[1])}&prop=info%7Cimageinfo%7Centityterms&inprop=url&iiprop=url%7Csize%7Cmime%7Cextmetadata&iiurlheight=220&wbetterms=label`,
+				);
+				const wikimediaJson = (await res.json()) as WikimediaResponse;
 
-			const pages = Object.values(wikimediaJson.query.pages);
-			if (pages.length == 0) {
-				return error(400, `Invalid image: ${title}`);
+				const pages = Object.values(wikimediaJson.query.pages);
+				if (pages.length == 0) {
+					return error(400, `Invalid image: ${selectedImage}`);
+				}
+				const page = pages[0];
+				images.push(wikimediaPageToImage(page));
+			} else {
+				const photo = await pexelsClient.photos.show({ id: selectedImage[1] });
+				if (isPexelsError(photo)) {
+					return error(400, `Invalid image: ${selectedImage}`);
+				}
+
+				images.push({
+					type: "pexels",
+					id: photo.id,
+					srcs: {
+						small: photo.src.medium,
+						large: photo.src.original,
+					},
+					alt: photo.alt ?? "Image",
+					attribution: {
+						text: `${photo.photographer} on Pexels`,
+						href: photo.url,
+					},
+				});
 			}
-			const page = pages[0];
-			images.push(wikimediaPageToImage(page));
 		}
 
 		const message: Message = {
@@ -66,8 +89,16 @@ function isStringifiedStringArray(thing: any): thing is string {
 		return false;
 	}
 
-	for (let maybeString of parsed) {
-		if (typeof maybeString !== "string") {
+	for (let maybeCorrect of parsed) {
+		if (!Array.isArray(maybeCorrect) || maybeCorrect.length != 2) {
+			return false;
+		}
+		if (
+			!(
+				(maybeCorrect[0] === "commons" && typeof maybeCorrect[1] === "string") ||
+				(maybeCorrect[0] === "pexels" && typeof maybeCorrect[1] === "number")
+			)
+		) {
 			return false;
 		}
 	}

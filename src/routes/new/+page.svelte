@@ -4,24 +4,25 @@
 	import Trash from "phosphor-svelte/lib/Trash";
 	import MagnifyingGlass from "phosphor-svelte/lib/MagnifyingGlass";
 
-	let selectedImages: Image[] = $state([]);
+	let selectedImages: ServiceImage[] = $state([]);
 
-	let SearchQuery: string = $state("");
+	let searchQuery: string = $state("");
+	let searchSource: "commons" | "pexels" = $state("commons");
 	let searching: boolean = $state(false);
-	let searchResults: Image[] = $state([]);
+	let searchResults: ServiceImage[] = $state([]);
 
 	let dialog: HTMLDialogElement;
-	let dialogImage: Image | undefined = $state();
+	let dialogImage: ServiceImage | undefined = $state();
 
 	async function search() {
-		if (!SearchQuery.trim()) return;
+		if (!searchQuery.trim()) return;
 		searching = true;
-		const res = await fetch(`./new/imageSearch/${encodeURIComponent(SearchQuery)}`);
+		const res = await fetch(`./new/imageSearch/${encodeURIComponent(searchQuery)}/${searchSource}`);
 		searchResults = await res.json();
 		searching = false;
 	}
 
-	function showAttribution(image: Image) {
+	function showAttribution(image: ServiceImage) {
 		dialogImage = image;
 		dialog.showModal();
 	}
@@ -52,7 +53,11 @@
 
 	<div class="container">
 		<div class="row">
-			<input type="text" placeholder="Search images" bind:value={SearchQuery} />
+			<input type="text" placeholder="Search images" bind:value={searchQuery} />
+			<select bind:value={searchSource}>
+				<option value="commons">Wikimedia Commons</option>
+				<option value="pexels">Pexels</option>
+			</select>
 			<button type="button" onclick={search}><MagnifyingGlass weight="bold" /></button>
 		</div>
 
@@ -87,9 +92,14 @@
 
 	<input
 		type="text"
-		name="imageTitles"
+		name="images"
 		class="hidden"
-		value={JSON.stringify(selectedImages.map((image) => image.filename))}
+		value={JSON.stringify(
+			selectedImages.map((image) => [
+				image.type,
+				image.type == "commons" ? image.filename : image.id,
+			]),
+		)}
 	/>
 	<button>Submit</button>
 </form>
@@ -125,7 +135,8 @@
 		background: #110f1b;
 	}
 
-	.container input {
+	.container input,
+	.container select {
 		background: #090811;
 	}
 

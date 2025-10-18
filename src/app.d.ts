@@ -10,7 +10,6 @@ declare global {
 	}
 
 	type Image = {
-		filename: string;
 		srcs: {
 			small: string;
 			large: string;
@@ -22,6 +21,18 @@ declare global {
 		};
 	};
 
+	type CommonsImage = Image & {
+		type: "commons";
+		filename: string;
+	};
+
+	type PexelsImage = Image & {
+		type: "pexels";
+		id: number;
+	};
+
+	type ServiceImage = CommonsImage | PexelsImage;
+
 	type Guess = {
 		text: string;
 		author: string;
@@ -31,7 +42,7 @@ declare global {
 		id: string;
 		author: string;
 		text: string;
-		images: Image[];
+		images: ServiceImage[];
 		guesses: Guess[];
 	};
 

@@ -20,6 +20,7 @@ form {
 }
 
 input,
+select,
 button {
 	padding: 12px 22px;
 	border: none;
@@ -28,11 +29,19 @@ button {
 	font: inherit;
 }
 
-input {
-	width: 520px;
+input,
+select {
 	margin-bottom: 16px;
 	outline: none;
 	background: #110f1b;
+}
+
+input {
+	width: 520px;
+}
+
+option {
+	background: #000000;
 }
 
 button {
