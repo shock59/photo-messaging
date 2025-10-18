@@ -4,6 +4,10 @@
 	import Trash from "phosphor-svelte/lib/Trash";
 	import MagnifyingGlass from "phosphor-svelte/lib/MagnifyingGlass";
 	import AttributionDialog from "$lib/components/AttributionDialog.svelte";
+	import { onMount } from "svelte";
+	import stopEnterSubmittingForm from "$lib/stopEnterSubmittingForm";
+
+	let form: HTMLFormElement;
 
 	let selectedImages: ServiceImage[] = $state([]);
 
@@ -27,9 +31,15 @@
 		dialogImage = image;
 		dialog.show();
 	}
+
+	onMount(() => {
+		stopEnterSubmittingForm(form);
+	});
 </script>
 
-<form method="POST">
+<h1>Create a new message</h1>
+
+<form method="POST" bind:this={form}>
 	<input type="text" placeholder="Your message" name="text" />
 
 	<div class="container">
@@ -54,7 +64,14 @@
 
 	<div class="container">
 		<div class="row">
-			<input type="text" placeholder="Search images" bind:value={searchQuery} />
+			<input
+				type="text"
+				placeholder="Search images"
+				bind:value={searchQuery}
+				onkeydown={(event) => {
+					if (event.key == "Enter") search();
+				}}
+			/>
 			<select bind:value={searchSource}>
 				<option value="commons">Wikimedia Commons</option>
 				<option value="pexels">Pexels</option>
@@ -108,6 +125,10 @@
 <AttributionDialog image={dialogImage} bind:this={dialog} />
 
 <style>
+	form {
+		width: 100%;
+	}
+
 	.container {
 		width: calc(100% - 44px);
 		max-width: 1260px;

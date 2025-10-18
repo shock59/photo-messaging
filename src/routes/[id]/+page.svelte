@@ -1,8 +1,12 @@
 <script lang="ts">
 	import AttributionDialog from "$lib/components/AttributionDialog.svelte";
+	import stopEnterSubmittingForm from "$lib/stopEnterSubmittingForm.js";
 	import Info from "phosphor-svelte/lib/Info";
+	import { onMount } from "svelte";
 
 	const { data } = $props();
+
+	let form: HTMLFormElement | undefined = $state();
 
 	let dialog: AttributionDialog;
 	let dialogImage: ServiceImage | undefined = $state();
@@ -11,62 +15,57 @@
 		dialogImage = image;
 		dialog.show();
 	}
+
+	onMount(() => {
+		if (form) stopEnterSubmittingForm(form);
+	});
 </script>
 
-<main>
-	<h1>What do you think the message is?</h1>
-	<div class="author">Message created by {data.message.author}</div>
+<h1>What do you think the message is?</h1>
+<div class="author">Message created by {data.message.author}</div>
 
-	<div id="images-container">
-		{#each data.message.images as image}
-			<div class="image-container">
-				<img src={image.srcs.small} alt={image.alt} />
+<div id="images-container">
+	{#each data.message.images as image}
+		<div class="image-container">
+			<img src={image.srcs.small} alt={image.alt} />
 
-				<div class="image-overlay">
-					<button type="button" onclick={() => showAttribution(image)}
-						><Info size={32} weight="duotone" /></button
-					>
-				</div>
+			<div class="image-overlay">
+				<button type="button" onclick={() => showAttribution(image)}
+					><Info size={32} weight="duotone" /></button
+				>
 			</div>
-		{/each}
-	</div>
+		</div>
+	{/each}
+</div>
 
-	{#if !data.guessed}
-		<form method="POST" action="?/guess">
-			<input type="text" placeholder="Your guess" name="text" />
-			<input type="text" placeholder="Your name (optional)" name="author" />
-			<button>Guess</button>
-		</form>
-	{:else}
-		<div class="answer-text-introduction">The message was:</div>
-		<div class="answer-text">“{data.message.text}”</div>
+{#if !data.guessed}
+	<form method="POST" action="?/guess" bind:this={form}>
+		<input type="text" placeholder="Your guess" name="text" />
+		<input type="text" placeholder="Your name (optional)" name="author" />
+		<button>Guess</button>
+	</form>
+{:else}
+	<div class="answer-text-introduction">The message was:</div>
+	<div class="answer-text">“{data.message.text}”</div>
 
-		<h2>Others' guesses</h2>
+	<h2>Others' guesses</h2>
 
-		{#if !data.message.guesses.length}
-			<p>Nobody has guessed yet.</p>
-		{/if}
-		{#each data.message.guesses as guess}
-			<div class="guess">
-				<div>{guess.text}</div>
-				<div class="guess-author">{guess.author}</div>
-			</div>
-		{/each}
+	{#if !data.message.guesses.length}
+		<p>Nobody has guessed yet.</p>
 	{/if}
+	{#each data.message.guesses as guess}
+		<div class="guess">
+			<div>{guess.text}</div>
+			<div class="guess-author">{guess.author}</div>
+		</div>
+	{/each}
+{/if}
 
-	<AttributionDialog image={dialogImage} bind:this={dialog} />
-</main>
+<AttributionDialog image={dialogImage} bind:this={dialog} />
 
 <style>
-	main {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-	}
-
 	h1 {
 		margin-bottom: 0;
-		font-size: 48px;
 	}
 
 	.author {
