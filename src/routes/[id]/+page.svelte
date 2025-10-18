@@ -7,7 +7,7 @@
 
 	<div id="images-container">
 		{#each data.message.images as image}
-			<img src={image.src} alt={image.alt} />
+			<img src={image.srcs.small} alt={image.alt} />
 		{/each}
 	</div>
 

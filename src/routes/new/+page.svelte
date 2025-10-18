@@ -34,7 +34,7 @@
 		<div class="images-container">
 			{#each selectedImages as image, index}
 				<div class="image-container">
-					<img src={image.src} alt={image.alt} />
+					<img src={image.srcs.small} alt={image.alt} />
 					<div class="image-overlay">
 						<button type="button" onclick={() => showAttribution(image)}
 							><Info size={32} weight="duotone" /></button
@@ -61,7 +61,7 @@
 			{:else if searchResults.length}
 				{#each searchResults as image}
 					<div class="image-container">
-						<img src={image.src} alt={image.alt} />
+						<img src={image.srcs.small} alt={image.alt} />
 						<div class="image-overlay">
 							<button type="button" onclick={() => showAttribution(image)}
 								><Info size={32} weight="duotone" /></button
@@ -88,7 +88,9 @@
 
 <dialog bind:this={dialog}>
 	{#if dialogImage}
-		<div class="image-container"><img src={dialogImage.src} alt={dialogImage.alt} /></div>
+		<div class="image-container">
+			{#key dialogImage}<img src={dialogImage.srcs.large} alt={dialogImage.alt} />{/key}
+		</div>
 		<div>{dialogImage.alt}</div>
 		<div class="attribution">
 			Attribution: <a href={dialogImage.attribution.href}>{dialogImage.attribution.text}</a>

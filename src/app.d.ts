@@ -10,7 +10,10 @@ declare global {
 	}
 
 	type Image = {
-		src: string;
+		srcs: {
+			small: string;
+			large: string;
+		};
 		alt: string;
 		attribution: {
 			text: string;

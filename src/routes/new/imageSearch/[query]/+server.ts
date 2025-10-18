@@ -32,18 +32,19 @@ export async function GET({ params }) {
 	);
 	const wikimediaJson = (await res.json()) as WikimediaResponse;
 
-	const images = await Promise.all(
+	const images: Image[] = await Promise.all(
 		Object.values(wikimediaJson.query.pages)
 			.toSorted((a, b) => a.index - b.index)
 			.map(async (page) => {
-				const author = stripHtml(page.imageinfo[0].extmetadata.Artist?.value ?? 'Wikimedia').result;
+				const imageInfo = page.imageinfo[0];
+				const author = stripHtml(imageInfo.extmetadata.Artist?.value ?? 'Wikimedia').result;
 
 				return {
-					src: page.imageinfo[0].thumburl,
+					srcs: { small: imageInfo.thumburl, large: imageInfo.url },
 					alt: stripHtml(page.entityterms?.label[0] ?? 'Image').result,
 					attribution: {
 						text: author,
-						href: page.imageinfo[0].descriptionurl
+						href: imageInfo.descriptionurl
 					}
 				};
 			})
