@@ -55,6 +55,11 @@ button {
 	width: fit-content;
 	background: #b5598f;
 	cursor: pointer;
+	transition: 500ms;
+}
+
+button:disabled {
+	background: #110f1b;
 }
 
 a {

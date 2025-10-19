@@ -7,26 +7,32 @@ import pexelsClient from "$lib/pexelsClient.js";
 import pexelsPhotoToImage from "$lib/pexelsPhotoToImage.js";
 import unsafeImage from "$lib/unsafeImage.js";
 import { wikimediaPageToImage } from "$lib/wikimediaPageToImage";
-import { error, redirect } from "@sveltejs/kit";
+import { fail, redirect } from "@sveltejs/kit";
 
 export const actions = {
 	default: async ({ request, cookies }) => {
 		const data = await request.formData();
 
 		const text = data.get("text");
-		if (!text || typeof text !== "string") {
-			return error(400, "Bad text");
+		if (!text || typeof text !== "string" || !text.trim().length) {
+			return fail(400, { message: "You need to set the text of your message" });
 		}
 
 		const imagesString = data.get("images");
 		if (!isStringifiedStringArray(imagesString)) {
-			return error(400, "Bad images");
+			return fail(400, { message: "Bad images" });
 		}
 		const selectedImages = JSON.parse(imagesString) as (["commons", string] | ["pexels", number])[];
+		if (!selectedImages.length) {
+			return fail(400, { message: "You need to add images to your message" });
+		}
+		if (selectedImages.length > 10) {
+			return fail(400, { message: "You can't add more than 10 images" });
+		}
 
 		let author = data.get("author") ?? "Anonymous";
 		if (typeof author !== "string") {
-			return error(400, "Bad author");
+			return fail(400, { message: "Bad author" });
 		}
 		if (author == "") {
 			author = "Anonymous";
@@ -43,19 +49,19 @@ export const actions = {
 
 				const pages = Object.values(wikimediaJson.query.pages);
 				if (pages.length == 0) {
-					return error(400, `Invalid image: ${selectedImage}`);
+					return fail(400, { message: `Invalid image: ${selectedImage}` });
 				}
 				const page = pages[0];
 
 				if (await unsafeImage(page.imageinfo[0].url)) {
-					return error(400, `Image was flagged by moderation: ${selectedImage}`);
+					return fail(400, { message: `Image was flagged by moderation: ${selectedImage}` });
 				}
 
 				images.push(wikimediaPageToImage(page));
 			} else {
 				const photo = await pexelsClient.photos.show({ id: selectedImage[1] });
 				if (isPexelsError(photo)) {
-					return error(400, `Invalid image: ${selectedImage}`);
+					return fail(400, { message: `Invalid image: ${selectedImage}` });
 				}
 
 				images.push(pexelsPhotoToImage(photo));

@@ -6,8 +6,12 @@
 	import AttributionDialog from "$lib/components/AttributionDialog.svelte";
 	import { onMount } from "svelte";
 	import stopEnterSubmittingForm from "$lib/stopEnterSubmittingForm";
+	import { enhance } from "$app/forms";
+	import { goto } from "$app/navigation";
 
 	let form: HTMLFormElement;
+	let formResponse: { message: string } | undefined = $state();
+	let disableForm: boolean = $state(false);
 
 	let selectedImages: ServiceImage[] = $state([]);
 
@@ -39,7 +43,21 @@
 
 <h1>Create a new message</h1>
 
-<form method="POST" bind:this={form}>
+<form
+	method="POST"
+	bind:this={form}
+	use:enhance={() => {
+		return async ({ result }) => {
+			if (result.type == "failure") {
+				formResponse = result.data as { message: string };
+				disableForm = false;
+			} else if (result.type == "redirect") {
+				goto(result.location);
+			}
+		};
+	}}
+	onsubmit={() => (disableForm = true)}
+>
 	<input type="text" placeholder="Your message" name="text" />
 
 	<div class="container">
@@ -130,7 +148,8 @@
 			]),
 		)}
 	/>
-	<button>Submit</button>
+	<button disabled={disableForm}>Submit</button>
+	<p class="error">{formResponse?.message}</p>
 </form>
 
 <AttributionDialog image={dialogImage} bind:this={dialog} />
@@ -167,5 +186,9 @@
 
 	.no-images {
 		text-align: center;
+	}
+
+	.error {
+		color: #ff3954;
 	}
 </style>
