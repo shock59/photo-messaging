@@ -39,7 +39,10 @@ export const actions = {
 		const guess: Guess = { text, author };
 		message.guesses.unshift(guess);
 		db.write();
-		discordLog("Guess submitted");
+		discordLog(
+			"Guess submitted",
+			`Message: [${params.id}](http://localhost:5173/${params.id}) (${message.text})\nGuess: ${guess.text}\nAuthor: ${guess.author}`,
+		);
 		addGuessedCookie(cookies, params.id);
 		return redirect(302, `/${params.id}`);
 	},

@@ -71,7 +71,10 @@ export const actions = {
 		db.data.messages.push(message);
 		db.write();
 
-		discordLog("Message submitted");
+		discordLog(
+			"Message submitted",
+			`Text: ${message.text}\nAuthor: ${message.author}\nID: [${message.id}](http://localhost:5173/${message.id})`,
+		);
 
 		addGuessedCookie(cookies, message.id);
 		return redirect(302, `/${message.id}`);

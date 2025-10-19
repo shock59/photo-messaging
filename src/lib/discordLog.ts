@@ -1,12 +1,26 @@
 import { DISCORD_WEBHOOK_ID, DISCORD_WEBHOOK_TOKEN } from "$env/static/private";
-import { EmbedBuilder, WebhookClient } from "discord.js";
+import {
+	ContainerBuilder,
+	EmbedBuilder,
+	MessageFlags,
+	TextDisplayBuilder,
+	WebhookClient,
+} from "discord.js";
 
 const webhookClient = new WebhookClient({ id: DISCORD_WEBHOOK_ID, token: DISCORD_WEBHOOK_TOKEN });
 
-export default function discordLog(message: string) {
-	const embed = new EmbedBuilder().setDescription(message).setColor(0x00ffff);
+export default function discordLog(title: string, message: string) {
+	const components = [
+		new ContainerBuilder().addTextDisplayComponents(
+			new TextDisplayBuilder().setContent(`## ${title}`),
+			new TextDisplayBuilder().setContent(message),
+		),
+	];
+	console.log(components);
 
 	webhookClient.send({
-		embeds: [embed],
+		flags: MessageFlags.IsComponentsV2,
+		components,
+		withComponents: true,
 	});
 }
