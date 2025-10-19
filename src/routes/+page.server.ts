@@ -11,7 +11,7 @@ export function load({ cookies }) {
 	let messages = db.data.messages.filter((message) => !guessedMessages.includes(message.id));
 
 	if (messages.length == 0) {
-		redirect(302, "/new");
+		redirect(302, "/nothingToGuess");
 	}
 
 	const messageId = randomFromArray(messages).id;
