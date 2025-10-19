@@ -1,3 +1,4 @@
+import { SITE_URL } from "$env/static/private";
 import { addGuessedCookie, guessed } from "$lib/cookies.js";
 import db from "$lib/db";
 import discordLog from "$lib/discordLog";
@@ -41,7 +42,7 @@ export const actions = {
 		db.write();
 		discordLog(
 			"Guess submitted",
-			`Message: [${params.id}](http://localhost:5173/${params.id}) (${message.text})\nGuess: ${guess.text}\nAuthor: ${guess.author}`,
+			`Message: [${params.id}](${SITE_URL}/${params.id}) (${message.text})\nGuess: ${guess.text}\nAuthor: ${guess.author}`,
 		);
 		addGuessedCookie(cookies, params.id);
 		return redirect(302, `/${params.id}`);

@@ -1,3 +1,4 @@
+import { SITE_URL } from "$env/static/private";
 import { addGuessedCookie } from "$lib/cookies.js";
 import db from "$lib/db.js";
 import discordLog from "$lib/discordLog";
@@ -73,7 +74,7 @@ export const actions = {
 
 		discordLog(
 			"Message submitted",
-			`Text: ${message.text}\nAuthor: ${message.author}\nID: [${message.id}](http://localhost:5173/${message.id})`,
+			`Text: ${message.text}\nAuthor: ${message.author}\nID: [${message.id}](${SITE_URL}/${message.id})`,
 		);
 
 		addGuessedCookie(cookies, message.id);
