@@ -27,11 +27,11 @@ export const actions = {
 			return fail(400, { message: "Bad images" });
 		}
 		const selectedImages = JSON.parse(imagesString) as (["commons", string] | ["pexels", number])[];
-		if (!selectedImages.length) {
-			return fail(400, { message: "You need to add images to your message" });
-		}
 		if (selectedImages.length > 10) {
 			return fail(400, { message: "You can't add more than 10 images" });
+		}
+		if (selectedImages.length < 2) {
+			return fail(400, { message: "You need to add at least 2 images" });
 		}
 
 		let author = data.get("author") ?? "Anonymous";
