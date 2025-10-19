@@ -187,8 +187,4 @@
 	.no-images {
 		text-align: center;
 	}
-
-	.error {
-		color: #ff3954;
-	}
 </style>

@@ -2,7 +2,8 @@ import { SITE_URL } from "$env/static/private";
 import { addGuessedCookie, guessed } from "$lib/cookies.js";
 import db from "$lib/db";
 import discordLog from "$lib/discordLog";
-import { error, redirect } from "@sveltejs/kit";
+import unsafeText from "$lib/unsafeText.js";
+import { error, fail, redirect } from "@sveltejs/kit";
 
 function getMessage(id: string) {
 	return db.data.messages.find((m) => m.id == id);
@@ -18,7 +19,7 @@ export function load({ params, cookies }) {
 }
 
 export const actions = {
-	guess: async ({ request, params, cookies, url }) => {
+	guess: async ({ request, params, cookies }) => {
 		const message = getMessage(params.id);
 		if (!message) {
 			return error(404);
@@ -27,14 +28,20 @@ export const actions = {
 		const data = await request.formData();
 		const text = data.get("text");
 		if (!text || typeof text !== "string") {
-			return error(400, "Bad text");
+			return fail(400, "You need to enter a guess");
+		}
+		if (unsafeText(text)) {
+			return fail(400, "Your guess includes profanity");
 		}
 		let author = data.get("author") ?? "Anonymous";
 		if (typeof author !== "string") {
-			return error(400, "Bad author");
+			return fail(400, "Bad author");
 		}
 		if (author == "") {
 			author = "Anonymous";
+		}
+		if (unsafeText(author)) {
+			return fail(400, "Your name includes profanity");
 		}
 
 		const guess: Guess = { text, author };

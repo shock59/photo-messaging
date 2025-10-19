@@ -1,12 +1,13 @@
 <script lang="ts">
+	import { enhance } from "$app/forms";
 	import AttributionDialog from "$lib/components/AttributionDialog.svelte";
 	import stopEnterSubmittingForm from "$lib/stopEnterSubmittingForm.js";
 	import Info from "phosphor-svelte/lib/Info";
 	import { onMount } from "svelte";
 
-	const { data } = $props();
+	const { data, form } = $props();
 
-	let form: HTMLFormElement | undefined = $state();
+	let formElement: HTMLFormElement | undefined = $state();
 
 	let dialog: AttributionDialog;
 	let dialogImage: ServiceImage | undefined = $state();
@@ -17,7 +18,7 @@
 	}
 
 	onMount(() => {
-		if (form) stopEnterSubmittingForm(form);
+		if (formElement) stopEnterSubmittingForm(formElement);
 	});
 </script>
 
@@ -40,10 +41,13 @@
 </div>
 
 {#if !data.guessed}
-	<form method="POST" action="?/guess" bind:this={form}>
+	<form method="POST" action="?/guess" bind:this={formElement} use:enhance>
 		<input type="text" placeholder="Your guess" name="text" />
 		<input type="text" placeholder="Your name (optional)" name="author" />
 		<button>Guess</button>
+		{#if form}
+			<p class="error">{form}</p>
+		{/if}
 	</form>
 {:else}
 	<div class="answer-text-introduction">The message was:</div>

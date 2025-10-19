@@ -108,3 +108,7 @@ img {
 	display: flex;
 	background: none;
 }
+
+.error {
+	color: #ff3954;
+}

@@ -6,6 +6,7 @@ import isPexelsError from "$lib/isPexelsError";
 import pexelsClient from "$lib/pexelsClient.js";
 import pexelsPhotoToImage from "$lib/pexelsPhotoToImage.js";
 import unsafeImage from "$lib/unsafeImage.js";
+import unsafeText from "$lib/unsafeText";
 import { wikimediaPageToImage } from "$lib/wikimediaPageToImage";
 import { fail, redirect } from "@sveltejs/kit";
 
@@ -16,6 +17,9 @@ export const actions = {
 		const text = data.get("text");
 		if (!text || typeof text !== "string" || !text.trim().length) {
 			return fail(400, { message: "You need to set the text of your message" });
+		}
+		if (unsafeText(text)) {
+			return fail(400, { message: "Your message includes profanity" });
 		}
 
 		const imagesString = data.get("images");
@@ -36,6 +40,9 @@ export const actions = {
 		}
 		if (author == "") {
 			author = "Anonymous";
+		}
+		if (unsafeText(author)) {
+			return fail(400, { message: "Your name includes profanity" });
 		}
 
 		let images: ServiceImage[] = [];
