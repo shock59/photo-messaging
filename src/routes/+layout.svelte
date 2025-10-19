@@ -17,7 +17,7 @@
 </svelte:head>
 
 <header>
-	<a href="/">Explore messages</a> <span class="bullet">•</span>
+	<a href="/">Guess a message</a> <span class="bullet">•</span>
 	<a href="/new">Create a new message</a>
 </header>
 
