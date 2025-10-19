@@ -49,6 +49,8 @@
 	<div class="answer-text-introduction">The message was:</div>
 	<div class="answer-text">“{data.message.text}”</div>
 
+	<div><a href="/">View a new message</a></div>
+
 	<h2>Others' guesses</h2>
 
 	{#if !data.message.guesses.length}
