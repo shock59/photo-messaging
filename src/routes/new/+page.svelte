@@ -43,6 +43,11 @@
 
 <h1>Create a new message</h1>
 
+<p>
+	Build a message using images that people will have to try and decipher. You can use up to 10
+	images. Try to use your images creatively to create an interesting message!
+</p>
+
 <form
 	method="POST"
 	bind:this={form}
