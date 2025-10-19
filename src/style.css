@@ -80,6 +80,7 @@ a {
 
 img {
 	height: 100%;
+	border-radius: inherit;
 }
 
 .image-overlay {
