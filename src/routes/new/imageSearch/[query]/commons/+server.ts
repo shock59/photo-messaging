@@ -1,4 +1,6 @@
+import { query } from "$app/server";
 import asyncFilter from "$lib/asyncFilter";
+import discordLog from "$lib/discordLog.js";
 import unsafeImage from "$lib/unsafeImage.js";
 import { wikimediaPageToImage } from "$lib/wikimediaPageToImage.js";
 import { json } from "@sveltejs/kit";
@@ -15,7 +17,15 @@ export async function GET({ params }) {
 				.toSorted((a, b) => a.index - b.index)
 				.filter((page) => !page.imageinfo[0].descriptionurl.endsWith(".gif")),
 			async (page) => {
-				return !(await unsafeImage(page.imageinfo[0].url));
+				const dangerous = await unsafeImage(page.imageinfo[0].url);
+				if (dangerous) {
+					discordLog(
+						"Unsafe image found",
+						`Unsafe image found in commons search for "${params.query}"`,
+						[255, 0, 0],
+					);
+				}
+				return !dangerous;
 			},
 		)
 	).map(wikimediaPageToImage);
